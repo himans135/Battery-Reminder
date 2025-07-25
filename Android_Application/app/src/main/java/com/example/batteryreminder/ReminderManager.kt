@@ -10,7 +10,7 @@ import android.util.Log
 import java.util.Calendar
 
 object ReminderManager {
-    fun scheduleReminder(context: Context, calendar: android.icu.util.Calendar, message: String) {
+    fun  scheduleReminder(context: Context, calendar: android.icu.util.Calendar, message: String) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
