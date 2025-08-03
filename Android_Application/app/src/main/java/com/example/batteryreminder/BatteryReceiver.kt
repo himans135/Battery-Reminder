@@ -9,19 +9,26 @@ import android.os.BatteryManager
 import android.util.Log
 
 class BatteryReceiver : BroadcastReceiver() {
-    private var hasPlayed = false
+    private var hasPlayed = false   // Track to avoid repeated alarm
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(context: Context?, intent: Intent?) {
+
+        if (intent == null || context == null) return
+
         val level= intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
 
         Log.d("BatteryReceiver", "Level: $level, Status: $status")
 
         if(level == 100 && status == BatteryManager.BATTERY_STATUS_FULL && !hasPlayed){
+//        if(level == 100 && status == BatteryManager.BATTERY_STATUS_FULL && !hasPlayed){
             try {
-                val mediaPlayer = MediaPlayer.create(context, R.raw.alarm_sound)
-                mediaPlayer.start()
+                Log.d("BatteryReceiver", "Battery is full. Playing alarm.")
                 hasPlayed = true
+
+                val mediaPlayer = MediaPlayer.create(context, R.raw.alarm_sound)
+                mediaPlayer?.start()
+
             }
             catch (e: Exception){
                 Log.e("BatteryReceiver", "Error playing sound: ${e.message}")

@@ -10,7 +10,7 @@ import android.util.Log
 import java.util.Calendar
 
 object ReminderManager {
-    fun  scheduleReminder(context: Context, calendar: android.icu.util.Calendar, message: String) {
+    fun  scheduleReminder(context: Context, calendar: android.icu.util.Calendar, message: String, phoneNumber: String? = null) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -25,6 +25,9 @@ object ReminderManager {
 
             val intent = Intent(context, ReminderReceiver::class.java).apply {
                 putExtra("reminderMessage", message)
+                if (phoneNumber != null) {
+                    putExtra("phoneNumber", phoneNumber)
+                }
             }
 
             val pendingIntent = PendingIntent.getBroadcast(
